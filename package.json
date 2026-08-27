@@ -2,6 +2,6 @@
   "name": "hirepulse-ai-root",
   "private": true,
   "scripts": {
-    "build": "cd frontend && npm install && node ./node_modules/vite/bin/vite.js build"
+    "build": "cd frontend && npm install && node ./node_modules/vite/bin/vite.js build && cd .. && node -e \"require('fs').cpSync('frontend/dist', 'dist', {recursive: true})\""
   }
 }
