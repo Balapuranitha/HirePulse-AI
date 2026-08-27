@@ -1,14 +1,22 @@
 {
-  "buildCommand": "cd frontend && npm install && node ./node_modules/vite/bin/vite.js build && cd .. && node -e \"require('fs').cpSync('frontend/dist', 'dist', {recursive: true})\"",
+  "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "rewrites": [
+  "functions": {
+    "api/index.py": {
+      "runtime": "python3.12"
+    }
+  },
+  "routes": [
     {
-      "source": "/api/:path*",
-      "destination": "/api/index.py"
+      "src": "/api/(.*)",
+      "dest": "/api/index.py"
     },
     {
-      "source": "/:path*",
-      "destination": "/index.html"
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }
