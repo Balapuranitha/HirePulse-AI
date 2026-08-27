@@ -40,16 +40,27 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Register Routers
-app.include_router(drives_router, prefix=settings.API_PREFIX)
-app.include_router(candidates_router, prefix=settings.API_PREFIX)
-app.include_router(analytics_router, prefix=settings.API_PREFIX)
-app.include_router(feedback_router, prefix=settings.API_PREFIX)
-app.include_router(dropout_router, prefix=settings.API_PREFIX)
-app.include_router(ai_router, prefix=settings.API_PREFIX)
-app.include_router(simulation_router, prefix=settings.API_PREFIX)
+# Register Routers with /api prefix AND without prefix for Vercel Serverless path flexibility
+app.include_router(drives_router, prefix="/api")
+app.include_router(candidates_router, prefix="/api")
+app.include_router(analytics_router, prefix="/api")
+app.include_router(feedback_router, prefix="/api")
+app.include_router(dropout_router, prefix="/api")
+app.include_router(ai_router, prefix="/api")
+app.include_router(simulation_router, prefix="/api")
+
+# Duplicate registration without /api prefix to handle direct serverless rewrites
+app.include_router(drives_router, prefix="")
+app.include_router(candidates_router, prefix="")
+app.include_router(analytics_router, prefix="")
+app.include_router(feedback_router, prefix="")
+app.include_router(dropout_router, prefix="")
+app.include_router(ai_router, prefix="")
+app.include_router(simulation_router, prefix="")
 
 @app.get("/")
+@app.get("/api")
+@app.get("/api/")
 def root():
     return {
         "status": "online",
